@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "589729199634",
+    "project_id": "tengkulakuapp",
+    "storage_bucket": "tengkulakuapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589729199634:android:9fb6ec9c9ee2561ad08acb",
+        "android_client_info": {
+          "package_name": "com.example.project_tengkulaku_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhFAxVHC-8ttqq_RqDYUGEMR1164kv_Ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589729199634:android:685b17e14cfdbd42d08acb",
+        "android_client_info": {
+          "package_name": "com.example.shop_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhFAxVHC-8ttqq_RqDYUGEMR1164kv_Ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
