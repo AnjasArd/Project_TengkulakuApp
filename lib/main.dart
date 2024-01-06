@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) {
-        SizeConfig().init(context); // Panggil inisialisasi SizeConfig di sini
+        SizeConfig().init(context); 
         return child!;
       },
       debugShowCheckedModeBanner: false,
