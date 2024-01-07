@@ -1,6 +1,8 @@
-# project_tengkulaku_app
+# Project Tengkulaku App
 
-A new Flutter project.
+Developed by:
+- Muhammad Anjas A.
+- Hendrik Hermawan
 
 ## Getting Started
 
