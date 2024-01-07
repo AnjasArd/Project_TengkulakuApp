@@ -15,14 +15,14 @@ class NoAccountText extends StatelessWidget {
       children: [
         Text(
           "Belum mempunyai akun? ",
-          style: TextStyle(fontSize: getProportionateScreenWidth(16)),
+          style: TextStyle(fontSize: getProportionateScreenWidth(15)),
         ),
         GestureDetector(
           onTap: () => Navigator.pushNamed(context, SignUpScreen.routeName),
           child: Text(
             "Buat akun baru",
             style: TextStyle(
-                fontSize: getProportionateScreenWidth(16),
+                fontSize: getProportionateScreenWidth(15),
                 color: kPrimaryColor),
           ),
         ),

@@ -19,6 +19,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String? email;
   String? password;
   String? confirmPassword;
+  bool isPetani = false;
+  bool isTengkulak = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<String?> errors = [];
@@ -51,7 +53,31 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildConfirmPassFormField(),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
+          ListTile(
+            title: Text("Registrasi Sebagai:"),
+          ),
+          RadioListTile<bool>(
+            title: Text('Petani'),
+            value: true,
+            groupValue: isPetani,
+            onChanged: (bool? value) {
+              setState(() {
+                isPetani = value!;
+                isTengkulak = !value;
+              });
+            },
+          ),
+          RadioListTile<bool>(
+            title: Text('Tengkulak'),
+            value: true,
+            groupValue: isTengkulak,
+            onChanged: (bool? value) {
+              setState(() {
+                isTengkulak = value!;
+                isPetani = !value;
+              });
+            },
+          ),
           DefaultButton(
             text: "Lanjutkan",
             press: () async {
@@ -82,7 +108,8 @@ class _SignUpFormState extends State<SignUpForm> {
   Future<void> simpanUsername(String userId) async {
     await _firestore.collection('users').doc(userId).set({
       'username': username,
-      // Other user details that you might want to save
+      'isPetani': isPetani,
+      'isTengkulak': isTengkulak,
     });
   }
 

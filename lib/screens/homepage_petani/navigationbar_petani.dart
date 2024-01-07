@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_tengkulaku_app/screens/home_petani.dart';
-import 'package:project_tengkulaku_app/screens/kelola_produk.dart';
-import 'package:project_tengkulaku_app/screens/pantau_stok.dart';
-
-// void main() => runApp(const BottomNavigationBarExampleApp());
-
-// class BottomNavigationBarExampleApp extends StatelessWidget {
-//   const BottomNavigationBarExampleApp({Key? key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: const BottomNavigationBarExample(),
-//     );
-//   }
-// }
+import 'package:project_tengkulaku_app/screens/homepage_petani/home_petani.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/menu_pesan_petani.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/kelola_produk.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/pantau_stok.dart';
 
 class BottomNavigationBarExample extends StatefulWidget {
   static String routeName = "/bottomNavbar";
@@ -34,6 +21,7 @@ class _BottomNavigationBarExampleState
     HomePetani(),
     PantauStok(),
     KelolaProduk(),
+    PesanPetani(), // Tambahkan widget Pesan ke daftar widgetOptions
   ];
 
   void _onItemTapped(int index) {
@@ -55,14 +43,16 @@ class _BottomNavigationBarExampleState
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons
-                .show_chart), // Mengganti ikon ke chart untuk "Pantau Stok"
+            icon: Icon(Icons.show_chart),
             label: 'Pantau Stok',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons
-                .production_quantity_limits), // Mengganti ikon ke chart untuk "Pantau Stok"
+            icon: Icon(Icons.production_quantity_limits),
             label: 'Kelola Produk',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message), // Tambahkan ikon untuk menu pesan
+            label: 'Pesan', // Atur label untuk menu pesan
           ),
         ],
         currentIndex: _selectedIndex,

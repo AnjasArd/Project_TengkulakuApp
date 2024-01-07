@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -81,8 +81,8 @@ class _KelolaProdukState extends State<KelolaProduk> {
 
                     if (file == null) return;
                     //Import dart:core
-                    String uniqueFileName =
-                        DateTime.now().millisecondsSinceEpoch.toString();
+                    // String uniqueFileName =
+                    //     DateTime.now().millisecondsSinceEpoch.toString();
 
                     /*Step 2: Upload to Firebase storage*/
                     //Install firebase_storage
@@ -100,7 +100,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
                     //Handle errors/success
                     try {
                       //Store the file
-                      await referenceImageToUpload.putFile(File(file!.path));
+                      // await referenceImageToUpload.putFile(File(file!.path));
                       //Success: get the download URL
                       imageUrl = await referenceImageToUpload.getDownloadURL();
                     } catch (error) {

@@ -4,7 +4,6 @@ import 'package:project_tengkulaku_app/komponen/button.dart';
 import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/konstan.dart';
 import 'package:project_tengkulaku_app/screens/login/login_screen.dart';
-import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 
 class OtpForm extends StatefulWidget {
   const OtpForm({
@@ -78,7 +77,7 @@ class _OtpFormState extends State<OtpForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController1,
                   autofocus: true,
@@ -93,7 +92,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController2,
                   focusNode: pin2FocusNode,
@@ -106,7 +105,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController3,
                   focusNode: pin3FocusNode,
@@ -119,7 +118,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController4,
                   focusNode: pin4FocusNode,
@@ -132,7 +131,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController5,
                   focusNode: pin5FocusNode,
@@ -145,7 +144,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               SizedBox(
-                width: getProportionateScreenWidth(55),
+                width: MediaQuery.of(context).size.width * 0.12,
                 child: TextFormField(
                   controller: otpController6,
                   focusNode: pin6FocusNode,
@@ -185,7 +184,7 @@ class _OtpFormState extends State<OtpForm> {
                   });
                 },
                 codeAutoRetrievalTimeout: (String verId) {},
-                timeout: Duration(seconds: 60),
+                timeout: Duration(seconds: 120),
               );
 
               // Lakukan verifikasi OTP setelah pengguna memasukkan kode OTP pada TextField dan menekan tombol

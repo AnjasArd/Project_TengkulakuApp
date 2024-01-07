@@ -61,7 +61,7 @@ Future<void> authKirimOtp(String phoneNumber) async {
     codeAutoRetrievalTimeout: (String verificationId) {
       print('Waktu pengambilan kode otomatis habis');
     },
-    timeout: Duration(seconds: 60),
+    timeout: Duration(seconds: 120),
   );
 }
 
@@ -93,7 +93,7 @@ Future<void> authVerifikasiOtp(
         codeAutoRetrievalTimeout(verificationId);
       }
     },
-    timeout: Duration(seconds: 60),
+    timeout: Duration(seconds: 120),
     // verificationCompletedTimeout: Duration(seconds: 0),
   );
 }
@@ -211,6 +211,6 @@ Future<void> authKirimUlangOtp(String phoneNumber) async {
     codeAutoRetrievalTimeout: (String verificationId) {
       print('Waktu pengambilan kode otomatis habis');
     },
-    timeout: Duration(seconds: 60),
+    timeout: Duration(seconds: 120),
   );
 }

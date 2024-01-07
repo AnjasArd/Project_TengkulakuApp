@@ -54,17 +54,18 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+        padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(10),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: SizeConfig.screenHeight * 0.05),
+            SizedBox(height: getProportionateScreenHeight(20)),
             Text(
               currentPage == 0 ? "Masukkan Nomor Telepon" : "Verifikasi OTP",
               style: headingStyle,
             ),
-            SizedBox(height: getProportionateScreenHeight(50)),
+            SizedBox(height: getProportionateScreenHeight(30)),
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -79,14 +80,15 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            SizedBox(height: SizeConfig.screenHeight * 0.1),
+            SizedBox(height: getProportionateScreenHeight(20)),
             GestureDetector(
               onTap: () {
                 if (currentPage == 0) {
                   if (ValidasiNomorTelepon()) {
                     _pageController.nextPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.ease);
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
                   }
                 } else {
                   // Logika untuk mengirim ulang OTP
@@ -99,8 +101,9 @@ class _BodyState extends State<Body> {
                         if (ValidasiNomorTelepon()) {
                           await authKirimOtp(phoneNumberController.text.trim());
                           _pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.ease);
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
                         }
                       },
                     )
@@ -116,13 +119,15 @@ class _BodyState extends State<Body> {
                       child: Center(
                         child: Text(
                           "Kirim Ulang Kode OTP",
-                          style:
-                              TextStyle(decoration: TextDecoration.underline),
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: getProportionateScreenWidth(14),
+                          ),
                         ),
                       ),
                     ),
             ),
-            SizedBox(height: getProportionateScreenHeight(65)),
+            SizedBox(height: getProportionateScreenHeight(20)),
           ],
         ),
       ),
@@ -140,11 +145,15 @@ class _BodyState extends State<Body> {
   }
 
   Widget buildOtpVerificationPage() {
-    return Column(
-      children: [
-        buildTimer(),
-        OtpForm(),
-      ],
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildTimer(),
+            OtpForm(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -168,10 +177,10 @@ class _BodyState extends State<Body> {
       children: [
         Text("Kode OTP Akan Valid Sampai "),
         TweenAnimationBuilder(
-          tween: Tween(begin: 60.0, end: 0.0),
-          duration: Duration(seconds: 60),
+          tween: Tween(begin: 120.0, end: 0.0),
+          duration: Duration(minutes: 2),
           builder: (_, dynamic value, child) => Text(
-            "00:${value.toInt()}",
+            "0${value ~/ 60}:${(value % 60).toInt().toString().padLeft(2, '0')}",
             style: TextStyle(color: kPrimaryColor),
           ),
         ),

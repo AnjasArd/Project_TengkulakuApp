@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_tengkulaku_app/komponen/button.dart';
@@ -5,7 +6,9 @@ import 'package:project_tengkulaku_app/komponen/form_error.dart';
 import 'package:project_tengkulaku_app/komponen/icon.dart';
 import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/konstan.dart';
-import 'package:project_tengkulaku_app/screens/navigationbar.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
+import 'package:project_tengkulaku_app/screens/homepage_tengkulak/menu_pesan_tengkulak.dart';
+import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -82,9 +85,29 @@ class _SignFormState extends State<SignForm> {
                     email: email!,
                     password: password!,
                   );
+
                   if (userCredential.user != null) {
-                    Navigator.pushNamed(
-                        context, BottomNavigationBarExample.routeName);
+                    User? user = userCredential.user;
+                    DocumentSnapshot<Map<String, dynamic>> userData =
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user!.uid)
+                            .get();
+
+                    if (userData.exists) {
+                      bool isPetani = userData.data()!['isPetani'] ?? false;
+                      bool isTengkulak =
+                          userData.data()!['isTengkulak'] ?? false;
+
+                      if (isPetani) {
+                        Navigator.pushNamed(
+                            context, BottomNavigationBarExample.routeName);
+                      } else if (isTengkulak) {
+                        Navigator.pushNamed(context, PesanTengkulak.routeName);
+                      } else {
+                        // Handle other roles or cases
+                      }
+                    }
                   }
                 } catch (e) {
                   if (e is FirebaseAuthException) {

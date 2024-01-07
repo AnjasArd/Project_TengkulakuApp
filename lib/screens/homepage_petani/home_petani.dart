@@ -56,15 +56,15 @@ class _HomePetaniState extends State<HomePetani> {
 
     if (jam < 12) {
       setState(() {
-        _sapa = 'Selamat Pagi ';
+        _sapa = 'Selamat pagi ';
       });
     } else if (jam < 18) {
       setState(() {
-        _sapa = 'Selamat Siang ';
+        _sapa = 'Selamat siang ';
       });
     } else {
       setState(() {
-        _sapa = 'Selamat Malam ';
+        _sapa = 'Selamat malam ';
       });
     }
     setState(() {
@@ -201,7 +201,7 @@ class _HomePetaniState extends State<HomePetani> {
                   // You can also set the border color and width here
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     children: [
                       // Texts

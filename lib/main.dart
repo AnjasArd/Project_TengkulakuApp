@@ -2,7 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/routes.dart';
-import 'package:project_tengkulaku_app/screens/navigationbar.dart';
+import 'package:project_tengkulaku_app/screens/login/login_screen.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
+import 'package:project_tengkulaku_app/screens/otp/otp_form.dart';
+import 'package:project_tengkulaku_app/screens/otp/otp_screen.dart';
 import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 import 'package:project_tengkulaku_app/tema.dart';
 import 'firebase_options.dart';
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) {
-        SizeConfig().init(context); // Panggil inisialisasi SizeConfig di sini
+        SizeConfig().init(context);
         return child!;
       },
       debugShowCheckedModeBanner: false,
