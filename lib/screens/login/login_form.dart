@@ -7,9 +7,7 @@ import 'package:project_tengkulaku_app/komponen/icon.dart';
 import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/konstan.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
-import 'package:project_tengkulaku_app/screens/homepage_tengkulak/menu_pesan_tengkulak.dart';
 import 'package:project_tengkulaku_app/screens/homepage_tengkulak/navigationbar_tengkulak.dart';
-import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -76,7 +74,7 @@ class _SignFormState extends State<SignForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
-            text: "Lanjutkan",
+            text: "Login",
             press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();

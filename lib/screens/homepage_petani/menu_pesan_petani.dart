@@ -44,7 +44,7 @@ class _PesanPetaniState extends State<PesanPetani> {
   void _getTengkulakList() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection('users')
-        .where('isPetani', isEqualTo: true)
+        .where('isTengkulak', isEqualTo: true)
         .get();
 
     setState(() {
@@ -59,9 +59,6 @@ class _PesanPetaniState extends State<PesanPetani> {
     Timestamp timestamp,
     String senderId,
   ) {
-    DateTime sentTime = timestamp.toDate();
-    String formattedTime = DateFormat('yyyy-MM-dd HH:mm').format(sentTime);
-
     TextEditingController replyController = TextEditingController();
 
     List<Map<String, dynamic>> messageDataList = messages.map((message) {
@@ -138,6 +135,9 @@ class _PesanPetaniState extends State<PesanPetani> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
               child: Text('Tutup'),
             ),
             ElevatedButton(
@@ -162,6 +162,9 @@ class _PesanPetaniState extends State<PesanPetani> {
 
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
               child: Text('Balas'),
             ),
           ],
@@ -310,7 +313,11 @@ class _PesanPetaniState extends State<PesanPetani> {
                               ],
                             ),
                             leading: CircleAvatar(
-                              child: Icon(Icons.message),
+                              child: Icon(
+                                Icons.message,
+                                color: Colors.white,
+                              ),
+                              backgroundColor: Color.fromARGB(255, 3, 172, 65),
                             ),
                             onTap: () {
                               // Menampilkan detail pesan

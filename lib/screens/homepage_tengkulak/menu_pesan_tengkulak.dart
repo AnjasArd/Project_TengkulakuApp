@@ -95,7 +95,7 @@ class _PesanTengkulakState extends State<PesanTengkulak> {
                                   type: BubbleType.receiverBubble),
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.only(top: 20),
-                              backGroundColor: Colors.blue,
+                              backGroundColor: Colors.green,
                               child: Container(
                                 constraints: BoxConstraints(
                                   maxWidth:
@@ -139,6 +139,9 @@ class _PesanTengkulakState extends State<PesanTengkulak> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
               child: Text('Tutup'),
             ),
             ElevatedButton(
@@ -163,6 +166,9 @@ class _PesanTengkulakState extends State<PesanTengkulak> {
 
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
               child: Text('Balas'),
             ),
           ],
@@ -306,12 +312,15 @@ class _PesanTengkulakState extends State<PesanTengkulak> {
                                 Text(messageContent),
                                 Text(
                                   '${DateFormat.yMd().add_jm().format(DateTime.fromMillisecondsSinceEpoch(timestamp?.millisecondsSinceEpoch ?? 0))}',
-                                  // Menampilkan waktu dan tanggal pengiriman jika tersedia
                                 ),
                               ],
                             ),
                             leading: CircleAvatar(
-                              child: Icon(Icons.message),
+                              backgroundColor: Color.fromARGB(255, 3, 172, 65),
+                              child: Icon(
+                                Icons.message,
+                                color: Colors.white,
+                              ),
                             ),
                             onTap: () {
                               // Menampilkan detail pesan

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/tambah_produk.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/update_produk.dart';
+import 'package:photo_view/photo_view.dart';
 
 class KelolaProduk extends StatefulWidget {
   static String routeName = "/kelola_produk";
@@ -47,7 +51,6 @@ class _KelolaProdukState extends State<KelolaProduk> {
     }
   }
 
-  // Function to delete a product
   Future<void> deleteProduct(String productId) async {
     try {
       await FirebaseFirestore.instance
@@ -64,92 +67,196 @@ class _KelolaProdukState extends State<KelolaProduk> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Daftar Produk',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w200),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, BottomNavigationBarPetani.routeName);
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Daftar Produk',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TambahProduk(),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TambahProduk(),
-                        ),
-                      );
-                      // Trigger a rebuild after returning from TambahProduk
-                      fetchData();
-                    },
-                    child: Text('+ Tambah Produk'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 47, 148, 63),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ],
+                );
+                // Trigger a rebuild after returning from TambahProduk
+                fetchData();
+              },
+              child: Text('+ Tambah Produk', style: TextStyle(fontSize: 16)),
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 47, 148, 63),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
-              SizedBox(height: 10),
-              // Display list of products using ListView.builder
-              Container(
-                height: MediaQuery.of(context).size.height -
-                    150, // Adjust the height as needed
-                child: isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: productList.length,
-                        itemBuilder: (context, index) {
-                          Map<String, dynamic> product = productList[index];
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: productList.length,
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic> product = productList[index];
 
-                          return Card(
-                            child: ListTile(
-                              title: Text(product['nama'] ?? ''),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Harga: ${product['harga'] ?? ''}'),
-                                  Text(
-                                      'Kategori: ${product['kategori'] ?? ''}'),
-                                  Text(
-                                      'Deskripsi: ${product['deskripsi'] ?? ''}'),
-                                ],
-                              ),
-                              leading: Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
+                        return Card(
+                          elevation: 4,
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            title: Text(
+                              product['nama'] ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Harga: ${_formatCurrency(product['harga'] ?? 0)}',
+                                ),
+                                Text('Kategori: ${product['kategori'] ?? ''}'),
+                                Text(
+                                    'Deskripsi: ${product['deskripsi'] ?? ''}'),
+                              ],
+                            ),
+                            leading: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ZoomableImage(
+                                      imageUrl: product['gambar'] ?? '',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Image.network(
+                                    product['gambar'] ?? '',
                                     fit: BoxFit.cover,
-                                    image:
-                                        NetworkImage(product['gambar'] ?? ''),
                                   ),
                                 ),
                               ),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  // Call the deleteProduct function with the product's document ID
-                                  deleteProduct(productSnapshot.docs[index].id);
-                                },
-                              ),
-                              // Add more details or customize as needed
                             ),
-                          );
-                        },
-                      ),
-              ),
-            ],
+                            trailing: Wrap(
+                              spacing: 8,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: Colors.grey),
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UpdateProduk(
+                                          productId:
+                                              productSnapshot.docs[index].id,
+                                        ),
+                                      ),
+                                    );
+                                    // Trigger a rebuild after returning from UpdateProduk
+                                    fetchData(); // Refresh data after update
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.grey),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Hapus Produk'),
+                                          content: Text(
+                                              'Apakah Anda yakin ingin menghapus produk ini?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                'Batal',
+                                                style: TextStyle(
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                // Call the deleteProduct function with the product's document ID
+                                                deleteProduct(productSnapshot
+                                                    .docs[index].id);
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                'Hapus',
+                                                style: TextStyle(
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String _formatCurrency(double amount) {
+  final intAmount = amount.toInt(); // Konversi double menjadi int
+  final currencyFormat =
+      NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+  return currencyFormat.format(intAmount);
+}
+
+class ZoomableImage extends StatelessWidget {
+  final String imageUrl;
+
+  const ZoomableImage({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Container(
+            child: PhotoView(
+              imageProvider: NetworkImage(imageUrl),
+              backgroundDecoration: BoxDecoration(color: Colors.black),
+            ),
           ),
         ),
       ),
