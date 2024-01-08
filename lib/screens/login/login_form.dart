@@ -8,6 +8,7 @@ import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/konstan.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
 import 'package:project_tengkulaku_app/screens/homepage_tengkulak/menu_pesan_tengkulak.dart';
+import 'package:project_tengkulaku_app/screens/homepage_tengkulak/navigationbar_tengkulak.dart';
 import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 
 class SignForm extends StatefulWidget {
@@ -101,9 +102,10 @@ class _SignFormState extends State<SignForm> {
 
                       if (isPetani) {
                         Navigator.pushNamed(
-                            context, BottomNavigationBarExample.routeName);
+                            context, BottomNavigationBarPetani.routeName);
                       } else if (isTengkulak) {
-                        Navigator.pushNamed(context, PesanTengkulak.routeName);
+                        Navigator.pushNamed(
+                            context, BottomNavigationBarTengkulak.routeName);
                       } else {
                         // Handle other roles or cases
                       }

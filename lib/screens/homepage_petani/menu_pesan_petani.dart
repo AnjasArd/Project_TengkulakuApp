@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:intl/intl.dart';
 
 class PesanPetani extends StatefulWidget {
@@ -8,14 +9,13 @@ class PesanPetani extends StatefulWidget {
   const PesanPetani({Key? key}) : super(key: key);
 
   @override
-  State<PesanPetani> createState() => _PesanTengkulakState();
+  State<PesanPetani> createState() => _PesanPetaniState();
 }
 
-class _PesanTengkulakState extends State<PesanPetani> {
+class _PesanPetaniState extends State<PesanPetani> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<DocumentSnapshot> tengkulakList = []; // Menyimpan daftar pengguna petani
-  List<DocumentSnapshot> receivedMessages =
-      []; // Menyimpan pesan yang diterima oleh petani
+  List<DocumentSnapshot> tengkulakList = [];
+  List<DocumentSnapshot> receivedMessages = [];
 
   @override
   void initState() {
@@ -24,10 +24,27 @@ class _PesanTengkulakState extends State<PesanPetani> {
     _getReceivedMessages();
   }
 
+  List<List<DocumentSnapshot>> groupMessagesBySender() {
+    Map<String, List<DocumentSnapshot>> groupedMessages = {};
+
+    // Mengelompokkan pesan berdasarkan senderId
+    receivedMessages.forEach((message) {
+      String senderId = message['senderId'] ?? '';
+
+      if (!groupedMessages.containsKey(senderId)) {
+        groupedMessages[senderId] = [];
+      }
+
+      groupedMessages[senderId]!.add(message);
+    });
+
+    return groupedMessages.values.toList();
+  }
+
   void _getTengkulakList() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection('users')
-        .where('isTengkulak', isEqualTo: true)
+        .where('isPetani', isEqualTo: true)
         .get();
 
     setState(() {
@@ -37,7 +54,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
 
   void _showMessageDetailDialog(
     BuildContext context,
-    String messageContent,
+    List<DocumentSnapshot<Object?>> messages,
     String senderUsername,
     Timestamp timestamp,
     String senderId,
@@ -45,8 +62,17 @@ class _PesanTengkulakState extends State<PesanPetani> {
     DateTime sentTime = timestamp.toDate();
     String formattedTime = DateFormat('yyyy-MM-dd HH:mm').format(sentTime);
 
-    TextEditingController replyController =
-        TextEditingController(); // Untuk mengatur pesan balasan
+    TextEditingController replyController = TextEditingController();
+
+    List<Map<String, dynamic>> messageDataList = messages.map((message) {
+      Map<String, dynamic> messageData = message.data() as Map<String, dynamic>;
+      return {
+        'message': messageData['message'],
+        'senderId': messageData['senderId'],
+        'senderUsername': messageData['senderUsername'],
+        'timestamp': messageData['timestamp'],
+      };
+    }).toList();
 
     showDialog(
       context: context,
@@ -57,14 +83,45 @@ class _PesanTengkulakState extends State<PesanPetani> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(messageContent),
-              SizedBox(height: 8),
-              Text(
-                '$formattedTime',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 12,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: messageDataList
+                    .map((message) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ChatBubble(
+                              clipper: ChatBubbleClipper8(
+                                  type: BubbleType.receiverBubble),
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.only(top: 20),
+                              backGroundColor: Colors.green,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                ),
+                                child: Text(
+                                  message['message'] ?? '',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                '${DateFormat('yyyy-MM-dd HH:mm').format(message['timestamp'].toDate())}',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        ))
+                    .toList(),
               ),
               SizedBox(height: 16),
               TextField(
@@ -86,7 +143,23 @@ class _PesanTengkulakState extends State<PesanPetani> {
             ElevatedButton(
               onPressed: () {
                 // Kirim pesan balasan dengan replyController.text dan data penerima pesan
-                kirimPesanPetani(replyController.text, senderId);
+                String replyMessage = replyController.text;
+                kirimPesanTengkulak(replyMessage, senderId);
+
+                // Update tampilan dengan menambahkan pesan balasan ke daftar pesan
+                setState(() {
+                  FirebaseFirestore.instance.collection('messages').add({
+                    'message': replyMessage,
+                    'senderId': FirebaseAuth.instance.currentUser?.uid ?? '',
+                    'senderUsername': senderUsername,
+                    'timestamp': FieldValue.serverTimestamp(),
+                  }).then((value) {
+                    print('Pesan balasan terkirim!');
+                  }).catchError((error) {
+                    print('Error: $error');
+                  });
+                });
+
                 Navigator.of(context).pop();
               },
               child: Text('Balas'),
@@ -113,7 +186,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
     }
   }
 
-  void kirimPesanPetani(String message, String receiverId) async {
+  void kirimPesanTengkulak(String message, String receiverId) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Mendapatkan informasi username pengguna dari Firestore
@@ -139,7 +212,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
     }
   }
 
-  Future<String?> getPetaniUsername(String senderId) async {
+  Future<String?> getTengkulakUsername(String senderId) async {
     DocumentSnapshot snapshot =
         await _firestore.collection('users').doc(senderId).get();
     if (snapshot.exists) {
@@ -151,9 +224,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pesan Petani'),
-      ),
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -178,10 +249,8 @@ class _PesanTengkulakState extends State<PesanPetani> {
                   child: ListTile(
                     title: Text(tengkulakName),
                     leading: CircleAvatar(
-                      backgroundColor: Color.fromARGB(
-                          255, 3, 172, 65), // Warna latar belakang ikon
-                      child:
-                          Icon(Icons.person, color: Colors.white), // Warna ikon
+                      backgroundColor: Color.fromARGB(255, 3, 172, 65),
+                      child: Icon(Icons.person, color: Colors.white),
                     ),
                     onTap: () {
                       _displayAddMessageDialog(context, tengkulakId);
@@ -199,19 +268,19 @@ class _PesanTengkulakState extends State<PesanPetani> {
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: receivedMessages.length,
-            itemBuilder: (BuildContext context, int index) {
-              final Map<String, dynamic> data =
-                  receivedMessages[index].data() as Map<String, dynamic>;
-              String messageContent = data['message'] ?? '';
-              String senderId =
-                  data['senderId'] ?? ''; // Ambil ID pengirim pesan
+            child: ListView.builder(
+              itemCount: groupMessagesBySender().length,
+              itemBuilder: (BuildContext context, int index) {
+                List<DocumentSnapshot> senderMessages =
+                    groupMessagesBySender()[index];
 
-              Timestamp? timestamp = data['timestamp'] as Timestamp?;
-              if (timestamp != null) {
+                String messageContent = senderMessages.last['message'] ?? '';
+                String senderId = senderMessages.first['senderId'] ?? '';
+                Timestamp? timestamp =
+                    senderMessages.last['timestamp'] as Timestamp?;
+
                 return FutureBuilder<String?>(
-                  future: getPetaniUsername(senderId),
+                  future: getTengkulakUsername(senderId),
                   builder:
                       (BuildContext context, AsyncSnapshot<String?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -235,7 +304,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
                               children: [
                                 Text(messageContent),
                                 Text(
-                                  '${DateFormat.yMd().add_jm().format(DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch))}',
+                                  '${DateFormat.yMd().add_jm().format(DateTime.fromMillisecondsSinceEpoch(timestamp?.millisecondsSinceEpoch ?? 0))}',
                                   // Menampilkan waktu dan tanggal pengiriman jika tersedia
                                 ),
                               ],
@@ -244,50 +313,26 @@ class _PesanTengkulakState extends State<PesanPetani> {
                               child: Icon(Icons.message),
                             ),
                             onTap: () {
-                              _showMessageDetailDialog(context, messageContent,
-                                  senderUsername, timestamp, senderId);
+                              // Menampilkan detail pesan
+                              _showMessageDetailDialog(
+                                  context,
+                                  senderMessages
+                                      as List<DocumentSnapshot<Object?>>,
+                                  senderUsername,
+                                  Timestamp.now(),
+                                  senderId);
                             },
                           ),
                         );
                       } else {
-                        return Card(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          elevation: 4.0,
-                          child: ListTile(
-                            title: Text('Unknown'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(messageContent),
-                                Text(
-                                  'Dari: Unknown',
-                                ), // Jika username tidak ditemukan
-                              ],
-                            ),
-                            leading: CircleAvatar(
-                              child: Icon(Icons.message),
-                            ),
-                            onTap: () {
-                              _showMessageDetailDialog(
-                                context,
-                                messageContent,
-                                'Unknown',
-                                Timestamp.now(),
-                                senderId,
-                              );
-                            },
-                          ),
-                        );
+                        return SizedBox();
                       }
                     }
                   },
                 );
-              } else {
-                return SizedBox(); // Tambahkan widget kosong jika timestamp adalah null
-              }
-            },
-          )),
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -299,7 +344,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
       BuildContext context, String tengkulakId) async {
     TextEditingController messageController = TextEditingController();
 
-    Future<String> _getPetaniUsername(String tengkulakId) async {
+    Future<String> _getTengkulakUsername(String tengkulakId) async {
       String username = '';
 
       try {
@@ -317,7 +362,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
       return username;
     }
 
-    String tengkulakUsername = await _getPetaniUsername(tengkulakId);
+    String tengkulakUsername = await _getTengkulakUsername(tengkulakId);
 
     showDialog(
       context: context,
@@ -357,7 +402,7 @@ class _PesanTengkulakState extends State<PesanPetani> {
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
-                kirimPesanPetani(
+                kirimPesanTengkulak(
                   messageController.text,
                   tengkulakId,
                 );

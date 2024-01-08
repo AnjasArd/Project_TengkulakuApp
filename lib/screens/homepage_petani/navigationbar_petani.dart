@@ -2,26 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/home_petani.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/menu_pesan_petani.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/kelola_produk.dart';
-import 'package:project_tengkulaku_app/screens/homepage_petani/pantau_stok.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/pantau_stok_petani.dart';
 
-class BottomNavigationBarExample extends StatefulWidget {
-  static String routeName = "/bottomNavbar";
-  const BottomNavigationBarExample({Key? key});
+class BottomNavigationBarPetani extends StatefulWidget {
+  static String routeName = "/bottomNavbarPetani";
+  const BottomNavigationBarPetani({Key? key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<BottomNavigationBarPetani> createState() =>
+      _BottomNavigationBarPetaniState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _BottomNavigationBarPetaniState extends State<BottomNavigationBarPetani> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomePetani(),
-    PantauStok(),
+    PantauStokPetani(),
     KelolaProduk(),
-    PesanPetani(), // Tambahkan widget Pesan ke daftar widgetOptions
+    PesanPetani(),
   ];
 
   void _onItemTapped(int index) {

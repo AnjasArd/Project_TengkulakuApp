@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_tengkulaku_app/konfigurasi_layar.dart';
 import 'package:project_tengkulaku_app/routes.dart';
-import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
 import 'package:project_tengkulaku_app/screens/splash/splash_screen.dart';
 import 'package:project_tengkulaku_app/tema.dart';
 import 'firebase_options.dart';
@@ -28,7 +27,6 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(context),
       initialRoute: SplashScreen.routeName,
       routes: routes,
-      home: BottomNavigationBarExample(),
     );
   }
 }

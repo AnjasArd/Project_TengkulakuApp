@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PantauStok extends StatelessWidget {
-  const PantauStok({super.key});
+class PantauStokPetani extends StatelessWidget {
+  const PantauStokPetani({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,6 @@ class PantauStok extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
     );
   }
 }

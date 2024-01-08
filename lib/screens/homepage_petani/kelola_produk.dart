@@ -1,138 +1,154 @@
-// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/tambah_produk.dart';
 
 class KelolaProduk extends StatefulWidget {
+  static String routeName = "/kelola_produk";
   const KelolaProduk({Key? key}) : super(key: key);
 
   @override
-  State<KelolaProduk> createState() => _KelolaProdukState();
+  _KelolaProdukState createState() => _KelolaProdukState();
 }
 
 class _KelolaProdukState extends State<KelolaProduk> {
-  TextEditingController _controllerName = TextEditingController();
-  TextEditingController _controllerQuantity = TextEditingController();
+  late List<Map<String, dynamic>> productList;
+  bool isLoading = true;
+  late QuerySnapshot<Map<String, dynamic>> productSnapshot;
 
-  GlobalKey<FormState> key = GlobalKey();
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
-  CollectionReference _reference =
-      FirebaseFirestore.instance.collection('produk');
+  // Function to get product data from Firestore
+  Future<void> fetchData() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
 
-  String imageUrl = '';
+      productSnapshot =
+          await FirebaseFirestore.instance.collection('produk').get();
+
+      productList = productSnapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      setState(() {
+        isLoading = false;
+      }); // Trigger a rebuild after fetching data
+    } catch (e) {
+      print('Error fetching data from Firestore: $e');
+      setState(() {
+        isLoading = false;
+      });
+      throw e;
+    }
+  }
+
+  // Function to delete a product
+  Future<void> deleteProduct(String productId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('produk')
+          .doc(productId)
+          .delete();
+      fetchData(); // Refresh data after deletion
+    } catch (e) {
+      print('Error deleting product: $e');
+      throw e;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add an item'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: key,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: _controllerName,
-                decoration:
-                    InputDecoration(hintText: 'Enter the name of the item'),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the item name';
-                  }
-
-                  return null;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Daftar Produk',
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w200),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TambahProduk(),
+                        ),
+                      );
+                      // Trigger a rebuild after returning from TambahProduk
+                      fetchData();
+                    },
+                    child: Text('+ Tambah Produk'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color.fromARGB(255, 47, 148, 63),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _controllerQuantity,
-                decoration:
-                    InputDecoration(hintText: 'Enter the quantity of the item'),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the item quantity';
-                  }
+              SizedBox(height: 10),
+              // Display list of products using ListView.builder
+              Container(
+                height: MediaQuery.of(context).size.height -
+                    150, // Adjust the height as needed
+                child: isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: productList.length,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic> product = productList[index];
 
-                  return null;
-                },
+                          return Card(
+                            child: ListTile(
+                              title: Text(product['nama'] ?? ''),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Harga: ${product['harga'] ?? ''}'),
+                                  Text(
+                                      'Kategori: ${product['kategori'] ?? ''}'),
+                                  Text(
+                                      'Deskripsi: ${product['deskripsi'] ?? ''}'),
+                                ],
+                              ),
+                              leading: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image:
+                                        NetworkImage(product['gambar'] ?? ''),
+                                  ),
+                                ),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  // Call the deleteProduct function with the product's document ID
+                                  deleteProduct(productSnapshot.docs[index].id);
+                                },
+                              ),
+                              // Add more details or customize as needed
+                            ),
+                          );
+                        },
+                      ),
               ),
-              IconButton(
-                  onPressed: () async {
-                    /*
-                * Step 1. Pick/Capture an image   (image_picker)
-                * Step 2. Upload the image to Firebase storage
-                * Step 3. Get the URL of the uploaded image
-                * Step 4. Store the image URL inside the corresponding
-                *         document of the database.
-                * Step 5. Display the image on the list
-                *
-                * */
-
-                    /*Step 1:Pick image*/
-                    //Install image_picker
-                    //Import the corresponding library
-
-                    ImagePicker imagePicker = ImagePicker();
-                    XFile? file = await imagePicker.pickImage(
-                        source: ImageSource.gallery);
-                    print('${file?.path}');
-
-                    if (file == null) return;
-                    //Import dart:core
-                    // String uniqueFileName =
-                    //     DateTime.now().millisecondsSinceEpoch.toString();
-
-                    /*Step 2: Upload to Firebase storage*/
-                    //Install firebase_storage
-                    //Import the library
-
-                    //Get a reference to storage root
-                    Reference referenceRoot = FirebaseStorage.instance.ref();
-                    Reference referenceDirImages =
-                        referenceRoot.child('images');
-
-                    //Create a reference for the image to be stored
-                    Reference referenceImageToUpload =
-                        referenceDirImages.child('name');
-
-                    //Handle errors/success
-                    try {
-                      //Store the file
-                      // await referenceImageToUpload.putFile(File(file!.path));
-                      //Success: get the download URL
-                      imageUrl = await referenceImageToUpload.getDownloadURL();
-                    } catch (error) {
-                      //Some error occurred
-                    }
-                  },
-                  icon: Icon(Icons.camera_alt)),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (imageUrl.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please upload an image')));
-
-                      return;
-                    }
-
-                    if (key.currentState!.validate()) {
-                      String itemName = _controllerName.text;
-                      String itemQuantity = _controllerQuantity.text;
-
-                      //Create a Map of data
-                      Map<String, String> dataToSend = {
-                        'name': itemName,
-                        'quantity': itemQuantity,
-                        'image': imageUrl,
-                      };
-
-                      //Add a new item
-                      _reference.add(dataToSend);
-                    }
-                  },
-                  child: Text('Submit'))
             ],
           ),
         ),
