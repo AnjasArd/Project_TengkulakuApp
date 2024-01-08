@@ -1,21 +1,22 @@
 {
   "project_info": {
-    "project_number": "589729199634",
-    "project_id": "tengkulakuapp",
-    "storage_bucket": "tengkulakuapp.appspot.com"
+    "project_number": "180241043532",
+    "firebase_url": "https://fir-flutter-25e66-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fir-flutter-25e66",
+    "storage_bucket": "fir-flutter-25e66.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:589729199634:android:9fb6ec9c9ee2561ad08acb",
+        "mobilesdk_app_id": "1:180241043532:android:1b62c890a38b993d12a4e9",
         "android_client_info": {
-          "package_name": "com.example.project_tengkulaku_app"
+          "package_name": "com.example.firebase_flutter"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBhFAxVHC-8ttqq_RqDYUGEMR1164kv_Ac"
+          "current_key": "AIzaSyAQl8M_h4RgP-uxxPa3iE2nbo56OHx75jI"
         }
       ],
       "services": {
@@ -26,15 +27,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:589729199634:android:685b17e14cfdbd42d08acb",
+        "mobilesdk_app_id": "1:180241043532:android:4ab5d9f2b00cf34e12a4e9",
         "android_client_info": {
-          "package_name": "com.example.shop_app"
+          "package_name": "com.example.project_tengkulaku_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBhFAxVHC-8ttqq_RqDYUGEMR1164kv_Ac"
+          "current_key": "AIzaSyAQl8M_h4RgP-uxxPa3iE2nbo56OHx75jI"
         }
       ],
       "services": {

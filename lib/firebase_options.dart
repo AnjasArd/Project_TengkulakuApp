@@ -44,38 +44,41 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAj6yQevvbXCY5Rdblu5zPMcCRFfzna7tU',
-    appId: '1:589729199634:web:8c4bfc471969bde0d08acb',
-    messagingSenderId: '589729199634',
-    projectId: 'tengkulakuapp',
-    authDomain: 'tengkulakuapp.firebaseapp.com',
-    storageBucket: 'tengkulakuapp.appspot.com',
-    measurementId: 'G-TKSS2X7865',
+    apiKey: 'AIzaSyDVPUb3m6H988pTFt177DtTCkJWy9iemrs',
+    appId: '1:180241043532:web:8aadb2f1d4e75bd612a4e9',
+    messagingSenderId: '180241043532',
+    projectId: 'fir-flutter-25e66',
+    authDomain: 'fir-flutter-25e66.firebaseapp.com',
+    databaseURL: 'https://fir-flutter-25e66-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-flutter-25e66.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBhFAxVHC-8ttqq_RqDYUGEMR1164kv_Ac',
-    appId: '1:589729199634:android:9fb6ec9c9ee2561ad08acb',
-    messagingSenderId: '589729199634',
-    projectId: 'tengkulakuapp',
-    storageBucket: 'tengkulakuapp.appspot.com',
+    apiKey: 'AIzaSyAQl8M_h4RgP-uxxPa3iE2nbo56OHx75jI',
+    appId: '1:180241043532:android:4ab5d9f2b00cf34e12a4e9',
+    messagingSenderId: '180241043532',
+    projectId: 'fir-flutter-25e66',
+    databaseURL: 'https://fir-flutter-25e66-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-flutter-25e66.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB3ohUxvduWEXx0ln6QJmZVxpGAh27mM50',
-    appId: '1:589729199634:ios:a80d36a346228c64d08acb',
-    messagingSenderId: '589729199634',
-    projectId: 'tengkulakuapp',
-    storageBucket: 'tengkulakuapp.appspot.com',
+    apiKey: 'AIzaSyCWnfkP7NpRUMPr7OxzZUOHYjFUEcVPRL8',
+    appId: '1:180241043532:ios:49c499f529f9383312a4e9',
+    messagingSenderId: '180241043532',
+    projectId: 'fir-flutter-25e66',
+    databaseURL: 'https://fir-flutter-25e66-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-flutter-25e66.appspot.com',
     iosBundleId: 'com.example.projectTengkulakuApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB3ohUxvduWEXx0ln6QJmZVxpGAh27mM50',
-    appId: '1:589729199634:ios:252c3088a5a1c190d08acb',
-    messagingSenderId: '589729199634',
-    projectId: 'tengkulakuapp',
-    storageBucket: 'tengkulakuapp.appspot.com',
+    apiKey: 'AIzaSyCWnfkP7NpRUMPr7OxzZUOHYjFUEcVPRL8',
+    appId: '1:180241043532:ios:06507a1fe34b16ec12a4e9',
+    messagingSenderId: '180241043532',
+    projectId: 'fir-flutter-25e66',
+    databaseURL: 'https://fir-flutter-25e66-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'fir-flutter-25e66.appspot.com',
     iosBundleId: 'com.example.projectTengkulakuApp.RunnerTests',
   );
 }
