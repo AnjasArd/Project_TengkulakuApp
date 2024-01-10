@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_tengkulaku_app/screens/homepage_petani/kelola_produk.dart';
+import 'package:project_tengkulaku_app/screens/homepage_petani/navigationbar_petani.dart';
 
 class TambahProduk extends StatefulWidget {
   static String routeName = "/tambah_produk";
@@ -55,42 +56,42 @@ class _TambahProdukState extends State<TambahProduk> {
   }
 
   Future<void> _saveProduct(BuildContext context) async {
-    final String imageUrl = await _uploadImageToFirebase();
+  final String imageUrl = await _uploadImageToFirebase();
 
-    try {
-      CollectionReference produkCollection =
-          FirebaseFirestore.instance.collection('produk');
+  try {
+    CollectionReference produkCollection =
+        FirebaseFirestore.instance.collection('produk');
 
-      await produkCollection.add({
-        'gambar': imageUrl,
-        'nama': nama,
-        'harga': harga,
-        'deskripsi': deskripsi,
-        'kategori': kategori,
-      });
+    await produkCollection.add({
+      'gambar': imageUrl,
+      'nama': nama,
+      'harga': harga,
+      'deskripsi': deskripsi,
+      'kategori': kategori,
+    });
 
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Notifikasi'),
-            content: Text('Data berhasil ditambahkan.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  // Navigator.of(context).pop();
-                  Navigator.pushNamed(context, KelolaProduk.routeName);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      print('Error: $e');
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Notifikasi'),
+          content: Text('Data berhasil ditambahkan.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.pushNamed(context, BottomNavigationBarPetani.routeName);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  } catch (e) {
+    print('Error: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {
