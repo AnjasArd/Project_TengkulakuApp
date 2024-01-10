@@ -44,7 +44,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching data from Firestore: $e');
+      print('Error mendapatkan data dariFirestore: $e');
       setState(() {
         isLoading = false;
       });
@@ -69,11 +69,10 @@ class _KelolaProdukState extends State<KelolaProduk> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushNamed(context, BottomNavigationBarPetani.routeName);
-          },
+          icon: Icon(Icons.dark_mode),
+          onPressed: () {},
         ),
       ),
       body: Padding(
@@ -85,6 +84,22 @@ class _KelolaProdukState extends State<KelolaProduk> {
               'Daftar Produk',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
+            // IconButton(
+            //   onPressed: () {
+            //     final themeProvider = Provider.of<ThemeProvider>(context,
+            //         listen:
+            //             false); // get the provider, listen false is necessary cause is in a function
+
+            //     setState(() {
+            //       isDarkmode = !isDarkmode;
+            //     }); // change the variable
+
+            //     isDarkmode // call the functions
+            //         ? themeProvider.setDarkmode()
+            //         : themeProvider.setLightMode();
+            //   },
+            //   icon: const Icon(Icons.dark_mode),
+            // ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -105,27 +120,27 @@ class _KelolaProdukState extends State<KelolaProduk> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     Spacer(),
-            //     DropdownButton<String>(
-            //       value: selectedCategory,
-            //       onChanged: (String? newValue) {
-            //         setState(() {
-            //           selectedCategory = newValue!;
-            //         });
-            //       },
-            //       items:
-            //           categories.map<DropdownMenuItem<String>>((String value) {
-            //         return DropdownMenuItem<String>(
-            //           value: value,
-            //           child: Text(value),
-            //         );
-            //       }).toList(),
-            //     ),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Spacer(),
+                DropdownButton<String>(
+                  value: selectedCategory,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCategory = newValue!;
+                    });
+                  },
+                  items:
+                      categories.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
             SizedBox(height: 20),
             Expanded(
               child: isLoading

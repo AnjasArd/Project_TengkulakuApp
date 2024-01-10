@@ -55,10 +55,7 @@ class _PantauStokPetaniState extends State<PantauStokPetani> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Pantau Stok',
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-        ),
+        title: Text('Pantau Stok'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -120,33 +117,3 @@ void main() {
     home: PantauStokPetani(),
   ));
 }
-
-// class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
-//   @override
-//   Size get preferredSize => Size.fromHeight(kToolbarHeight);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         gradient: LinearGradient(
-//           colors: [
-//             Colors.blue,
-//             Colors.green,
-//           ],
-//           begin: Alignment.centerLeft,
-//           end: Alignment.centerRight,
-//         ),
-//       ),
-//       child: AppBar(
-//         title: Text(
-//           'Pantau Stok',
-//           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-//         ),
-//         backgroundColor:
-//             Colors.transparent, // Set AppBar background to transparent
-//         elevation: 0, // Remove AppBar shadow
-//       ),
-//     );
-//   }
-// }
