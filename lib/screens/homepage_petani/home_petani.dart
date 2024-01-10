@@ -106,10 +106,10 @@ class _HomePetaniState extends State<HomePetani> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton.filledTonal(
-              onPressed: () {},
-              icon: const Icon(IconlyBroken.notification),
-            ),
+            // child: IconButton.filledTonal(
+            //   onPressed: () {},
+            //   icon: const Icon(IconlyBroken.notification),
+            // ),
           ),
           IconButton(
             onPressed: () async {

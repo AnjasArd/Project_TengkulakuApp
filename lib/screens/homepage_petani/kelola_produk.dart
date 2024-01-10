@@ -18,6 +18,8 @@ class _KelolaProdukState extends State<KelolaProduk> {
   late List<Map<String, dynamic>> productList;
   bool isLoading = true;
   late QuerySnapshot<Map<String, dynamic>> productSnapshot;
+  late String selectedCategory = 'Semua';
+  List<String> categories = ['Semua', 'Buah', 'Sayur'];
 
   @override
   void initState() {
@@ -25,7 +27,6 @@ class _KelolaProdukState extends State<KelolaProduk> {
     fetchData();
   }
 
-  // Function to get product data from Firestore
   Future<void> fetchData() async {
     try {
       setState(() {
@@ -41,7 +42,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
 
       setState(() {
         isLoading = false;
-      }); // Trigger a rebuild after fetching data
+      });
     } catch (e) {
       print('Error fetching data from Firestore: $e');
       setState(() {
@@ -57,7 +58,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
           .collection('produk')
           .doc(productId)
           .delete();
-      fetchData(); // Refresh data after deletion
+      fetchData();
     } catch (e) {
       print('Error deleting product: $e');
       throw e;
@@ -93,7 +94,6 @@ class _KelolaProdukState extends State<KelolaProduk> {
                     builder: (context) => TambahProduk(),
                   ),
                 );
-                // Trigger a rebuild after returning from TambahProduk
                 fetchData();
               },
               child: Text('+ Tambah Produk', style: TextStyle(fontSize: 16)),
@@ -105,6 +105,27 @@ class _KelolaProdukState extends State<KelolaProduk> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     Spacer(),
+            //     DropdownButton<String>(
+            //       value: selectedCategory,
+            //       onChanged: (String? newValue) {
+            //         setState(() {
+            //           selectedCategory = newValue!;
+            //         });
+            //       },
+            //       items:
+            //           categories.map<DropdownMenuItem<String>>((String value) {
+            //         return DropdownMenuItem<String>(
+            //           value: value,
+            //           child: Text(value),
+            //         );
+            //       }).toList(),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: 20),
             Expanded(
               child: isLoading
@@ -113,7 +134,10 @@ class _KelolaProdukState extends State<KelolaProduk> {
                       itemCount: productList.length,
                       itemBuilder: (context, index) {
                         Map<String, dynamic> product = productList[index];
-
+                        if (selectedCategory != 'Semua' &&
+                            product['kategori'] != selectedCategory) {
+                          return Container();
+                        }
                         return Card(
                           elevation: 4,
                           margin: EdgeInsets.symmetric(vertical: 8),
@@ -172,8 +196,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
                                         ),
                                       ),
                                     );
-                                    // Trigger a rebuild after returning from UpdateProduk
-                                    fetchData(); // Refresh data after update
+                                    fetchData();
                                   },
                                 ),
                                 IconButton(
@@ -200,7 +223,6 @@ class _KelolaProdukState extends State<KelolaProduk> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                // Call the deleteProduct function with the product's document ID
                                                 deleteProduct(productSnapshot
                                                     .docs[index].id);
                                                 Navigator.of(context).pop();
@@ -233,7 +255,7 @@ class _KelolaProdukState extends State<KelolaProduk> {
 }
 
 String _formatCurrency(double amount) {
-  final intAmount = amount.toInt(); // Konversi double menjadi int
+  final intAmount = amount.toInt();
   final currencyFormat =
       NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
   return currencyFormat.format(intAmount);

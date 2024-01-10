@@ -90,9 +90,7 @@ class _BodyState extends State<Body> {
                       curve: Curves.ease,
                     );
                   }
-                } else {
-                  // Logika untuk mengirim ulang OTP
-                }
+                } else {}
               },
               child: currentPage == 0
                   ? DefaultButton(
