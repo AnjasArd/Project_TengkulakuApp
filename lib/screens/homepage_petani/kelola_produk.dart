@@ -69,10 +69,11 @@ class _KelolaProdukState extends State<KelolaProduk> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         leading: IconButton(
-          icon: Icon(Icons.dark_mode),
-          onPressed: () {},
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, BottomNavigationBarPetani.routeName);
+          },
         ),
       ),
       body: Padding(

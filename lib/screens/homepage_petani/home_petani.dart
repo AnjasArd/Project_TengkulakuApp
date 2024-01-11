@@ -75,7 +75,89 @@ class _HomePetaniState extends State<HomePetani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(),
+                  SizedBox(height: 10),
+                  Text(
+                    _username,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text('Profile'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => Settings()),
+                // );
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Logout'),
+              onTap: () async {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(
+                        "Konfirmasi Logout",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      content: Text("Apakah anda yakin ingin logout?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Batal',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 3, 172, 65)),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await _auth.signOut();
+                            Navigator.pushNamed(
+                                context, SignInScreen.routeName);
+                          },
+                          child: Text(
+                            'Ya',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 3, 172, 65)),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -106,52 +188,10 @@ class _HomePetaniState extends State<HomePetani> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            // child: IconButton.filledTonal(
-            //   onPressed: () {},
-            //   icon: const Icon(IconlyBroken.notification),
-            // ),
-          ),
-          IconButton(
-            onPressed: () async {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(
-                      "Konfirmasi Logout",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    content: Text("Apakah anda yakin ingin logout?"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          'Batal',
-                          style:
-                              TextStyle(color: Color.fromARGB(255, 3, 172, 65)),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          await _auth.signOut();
-                          Navigator.pushNamed(context, SignInScreen.routeName);
-                        },
-                        child: Text(
-                          'Ya',
-                          style:
-                              TextStyle(color: Color.fromARGB(255, 3, 172, 65)),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.logout),
+            child: IconButton.filledTonal(
+              onPressed: () {},
+              icon: const Icon(IconlyBroken.notification),
+            ),
           ),
         ],
       ),
