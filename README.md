@@ -50,9 +50,7 @@ Petani sering kali mengalami kesulitan dalam mendapatkan harga yang adil untuk h
 ## Kontribusi
 Kami terbuka untuk kontribusi dalam bentuk ide, kode, atau saran. Silakan buat pull request atau buka isu jika Anda ingin berkontribusi pada pengembangan aplikasi Tengkulaku.
 
-## Lisensi
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 ---
 
-Mari bersama-sama mendukung petani dan menciptakan ekosistem pertanian yang lebih baik melalui teknologi dengan aplikasi Tengkulaku!
+Mari bersama-sama mendukung petani dan menciptakan ekosistem pertanian yang lebih baik melalui teknologi dengan aplikasi **Tengkulaku!**
