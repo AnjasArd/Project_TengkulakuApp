@@ -1,4 +1,4 @@
-# Tengkulaku
+# Project Tengkulaku App
 
 Tengkulaku adalah aplikasi yang dirancang untuk menghubungkan petani dengan tengkulak atau pengepul, bertujuan meningkatkan efisiensi dalam rantai pasokan pertanian serta meningkatkan kesejahteraan petani. Aplikasi ini menyediakan platform digital untuk transaksi yang lebih adil, transparan, dan efisien antara petani dan tengkulak.
 
