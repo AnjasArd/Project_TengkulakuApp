@@ -21,7 +21,7 @@ Petani sering kali mengalami kesulitan dalam mendapatkan harga yang adil untuk h
 6. Meningkatkan produktivitas pertanian melalui rekomendasi berbasis data.
 7. Mengurangi pemborosan waktu dan sumber daya dalam rantai pasokan pertanian.
 
-## Teknologi yang Digunakan
+## Detail Sistem
 - **Frontend**: React Native
 - **Backend**: Node.js dengan Express
 - **Database**: PostgreSQL
