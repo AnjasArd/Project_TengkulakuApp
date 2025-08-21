@@ -22,10 +22,8 @@ Petani sering kali mengalami kesulitan dalam mendapatkan harga yang adil untuk h
 7. Mengurangi pemborosan waktu dan sumber daya dalam rantai pasokan pertanian.
 
 ## Detail Sistem
-- **Frontend**: React Native
-- **Backend**: Node.js dengan Express
-- **Database**: PostgreSQL
-- **Cloud Services**: AWS untuk penyimpanan dan hosting
+- **Android Framework**: Flutter
+- **Database**: Firebase
 - **Integrasi API**: API untuk data harga pasar dan notifikasi
 
 ## Instalasi dan Penggunaan
